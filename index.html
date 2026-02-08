@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для Алёны 💖</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+body{
+  background: radial-gradient(1200px 600px at 50% -10%, #5b1b7a, #120018);
+  color:#fff;
+}
+section{
+  position:absolute; inset:0;
+  display:none; align-items:center; justify-content:center;
+  flex-direction:column; text-align:center; padding:20px;
+}
+section.active{display:flex}
+h1,p{max-width:720px}
+
+button{
+  margin-top:18px; padding:16px 32px; font-size:20px;
+  border-radius:40px; border:none; cursor:pointer;
+  touch-action:manipulation;
+}
+#yes{background:#ff5fa2;color:#000}
+#no{background:#444;color:#fff; position:absolute}
+
+input{
+  margin-top:14px; padding:14px 18px; font-size:18px;
+  border-radius:24px; border:none; width:min(90%,360px);
+  text-align:center;
+}
+
+/* hearts */
+.heart{
+  position:fixed; bottom:-40px; font-size:18px; opacity:.75;
+  animation:fly 9s linear infinite;
+}
+@keyframes fly{to{transform:translateY(-120vh)}}
+
+.fade{animation:fade .6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 МУЗЫКА (RAW GitHub) -->
+<audio id="t1" preload="auto" playsinline>
+  <source src="https://raw.githubusercontent.com/cernysevegor1-pixel/valentinka1-/main/PHARAOH_-_Mojj_kajjf_58182816%20(1).mp3" type="audio/mpeg">
+</audio>
+<audio id="t2" preload="auto" playsinline>
+  <source src="https://raw.githubusercontent.com/cernysevegor1-pixel/valentinka1-/main/PHARAOH_-_Rodnaya_Dusha_79161758%20(1).mp3" type="audio/mpeg">
+</audio>
+<audio id="t3" preload="auto" playsinline>
+  <source src="https://raw.githubusercontent.com/cernysevegor1-pixel/valentinka1-/main/PHARAOH_-_SHipuchka_58182819%20(1).mp3" type="audio/mpeg">
+</audio>
+<audio id="t4" preload="auto" playsinline>
+  <source src="https://raw.githubusercontent.com/cernysevegor1-pixel/valentinka1-/main/LSP_-_Pornozvezda_48616363%20(2).mp3" type="audio/mpeg">
+</audio>
+
+<section id="s1" class="active fade">
+  <h1>Алёна, ты меня любишь? 💔</h1>
+  <button id="yes">ДА</button>
+  <button id="no">НЕТ</button>
+</section>
+
+<section id="s2" class="fade">
+  <h1>Ребус 🧩</h1>
+  <p>Подсказка 💡 Фраза из 5 слов. Начинается так: <b>«я люблю тебя …»</b></p>
+  <input id="answer" placeholder="напиши фразу">
+  <button id="check">ПРОВЕРИТЬ</button>
+  <p id="hint" style="color:#ffb3d9"></p>
+</section>
+
+<section id="s3" class="fade">
+  <h1>🐈‍⬛</h1>
+  <p>Я очень жду нашей встречи. Жду лето, чтобы обнять тебя и быть рядом.</p>
+  <button onclick="go(4)">Дальше</button>
+</section>
+
+<section id="s4" class="fade">
+  <h1>С днём Валентина 💖</h1>
+  <p>
+    Мы уже 11 месяцев вместе. Мы многое прошли, научились ценить друг друга
+    и идти дальше рука об руку. Я тебя очень люблю.
+  </p>
+</section>
+
+<script>
+// hearts
+for(let i=0;i<28;i++){
+  const h=document.createElement('div');
+  h.className='heart';
+  h.textContent='❤';
+  h.style.left=Math.random()*100+'%';
+  h.style.animationDelay=Math.random()*6+'s';
+  h.style.fontSize=(14+Math.random()*16)+'px';
+  document.body.appendChild(h);
+}
+
+// music
+const tracks=[t1,t2,t3,t4];
+function play(n){
+  tracks.forEach(a=>{a.pause(); a.currentTime=0;});
+  tracks[n-1].play().catch(()=>{});
+}
+
+// navigation
+function go(n){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  play(n);
+}
+
+// buttons
+const yes=document.getElementById('yes');
+const no=document.getElementById('no');
+
+yes.addEventListener('click', ()=>{
+  play(1); go(2);
+});
+function flee(){
+  no.style.left=(10+Math.random()*80)+'%';
+  no.style.top =(10+Math.random()*70)+'%';
+}
+no.addEventListener('touchstart', flee);
+no.addEventListener('mouseenter', flee);
+
+// rebus
+function norm(t){
+  return t.toLowerCase().replace(/ё/g,'е').replace(/[^а-я\s]/g,'').replace(/\s+/g,' ').trim();
+}
+document.getElementById('check').addEventListener('click', ()=>{
+  const v=norm(document.getElementById('answer').value);
+  if(v.includes('я люблю тебя') && v.includes('моя') && v.includes('кошка')){
+    go(3);
+  } else {
+    document.getElementById('hint').textContent='Ответ: «я люблю тебя моя кошка»';
+  }
+});
+</script>
+
+</body>
+</html>
